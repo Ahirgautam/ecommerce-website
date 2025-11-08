@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/checkout.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{layout/fragments :: header('shop')}"></div>
+<main class="container">
+    <h1>Checkout</h1>
+    <form autocomplete="on" method="post" class="checkout-form">
+        <div class="form-section">
+            <div>Personal Information</div>
+            <div class="input-field">
+                <label for="fullName">Full Name</label>
+                <input name="fullName" id="fullName" placeholder="First and Last name" autofocus required pattern="[A-Za-z\s]+" title="Only letters and spaces are allowed">
+            </div>
+            <div class="two-input">
+                <div class="input-field">
+                    <label for="email">Email</label>
+                    <input name="email" id="email" placeholder="email" required  title="Please enter a valid email address">
+                </div>
+                <div class="input-field">
+                    <label for="mobile">Phone Number</label>
+                    <input name="mobile" id="mobile" placeholder="+91 1234567890" required pattern="[0-9]{10}" title="Please enter a valid phone number with country code +91">
+                </div>
+            </div>
+        </div>
+        <div class="form-section">
+            <div>Shipping Information</div>
+            <div class="input-field">
+                <label for="address1">Address Line 1</label>
+                <input name="address1" id="address1" placeholder="Street Address" required>
+            </div>
+            <div class="input-field">
+                <label for="address2">Address Line 2</label>
+                <input name="address2" id="address2" placeholder="Street Address" >
+            </div>
+            <div class="two-input">
+                <div class="input-field">
+                    <label for="state">State</label>
+                    <input name="state" id="state" placeholder="State" required>
+                </div>
+                <div class="input-field">
+                    <label for="city">City</label>
+                    <input name="city" id="city" placeholder="City" required>
+                </div>
+            </div>
+            <div class="input-field">
+                <label for="zip">Pin Code</label>
+                <input name="pin" id="zip" placeholder="Pin Code" required pattern="[0-9]{6}" title="Please enter a valid pin code">
+            </div>
+        </div>
+        <div class="form-section shipping-selection">
+            <div>Shipping Option</div>
+            <div class="custom-radio">
+                <input type="radio" id="standard" name="shipping" value="standard" class="shipping-option-input" data-price="0" checked>
+                <label for="standard">Standard Shipping (5-7 days) </label>
+                <span class="shipping-price">Free</span>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="express" name="shipping" value="express" class="shipping-option-input" data-price="120">
+                <label for="express">Express Shipping (2-3 days)  </label>
+                <span class="shipping-price">₹120.00</span>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="overnight" name="shipping" value="overnight" class="shipping-option-input" data-price="250">
+                <label for="overnight">Overnight Shipping (1 day) </label>
+                <span class="shipping-price">₹250.00</span>
+            </div>
+        </div>
+        <div class="form-section">
+            <div>Payment Option</div>
+            <div class="custom-radio">
+                <input type="radio" id="cod" name="payment" value="cod" checked>
+                <label for="cod">Cash on Delivery</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="upi" name="payment" value="upi">
+                <label for="upi">UPI</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="card" name="payment" value="card">
+                <label for="card">Credit/Debit Card</label>
+            </div>
+            <div class="custom-radio">
+                <input type="radio" id="netbanking" name="payment" value="netbanking">
+                <label for="netbanking">Net Banking</label>
+            </div>
+
+        </div>
+
+        <div class="form-section">
+            <div>Order Summary</div>
+            <div class="order-items flex-column">
+
+            </div>
+            <div class="order-total flex-column">
+
+                <div class="sub-totals flex">
+                    <span>SubTotal</span>
+                    <span>₹ <span class="sub-total">25.00</span></span>
+                </div>
+                <div class="sub-totals flex">
+                    <span>Shipping</span>
+                    <span>₹<span class="shipping-price-display">0.00</span></span>
+                </div>
+                <div class="sub-totals flex">
+                    <span>Tax</span>
+                    <span>₹<span class="tax-amount"></span></span>
+                </div>
+                <hr>
+                <div class="final-total flex">
+                    <span>Total</span>
+                    <span>₹ <span class="total"></span></span>
+                </div>
+            </div>
+            <div>
+                <input type="checkbox" id="terms" name="terms" required>
+                <label for="terms">I agree to the Terms and Conditions</label>
+            </div>
+            <button type="submit" class="place-order-btn primary-btn">
+                <span class="loading"></span>
+                Place Order
+            </button>
+        </div>
+    </form>
+</main>
+
+
+<div th:replace="~{layout/fragments :: login-register}"></div>
+<div th:replace="~{layout/customAlert :: alert}"></div>
+<script th:src="@{/js/customAlert.js}"></script>
+<script src="/js/auth.js" type="module"></script>
+<script src="/js/checkout.js" type="module"></script>
+<script src="/js/script.js" type="module"></script>
+</body>
+</html>

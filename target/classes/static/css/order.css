@@ -1,0 +1,199 @@
+:root{
+    --success-color:rgb(30, 226, 72);
+}
+main{
+    padding: 1em 0;
+    position:relative;
+}
+.order-header{
+    border-bottom: 1px solid var(--border-color);
+    padding: 1em 0;
+    flex-wrap: wrap;
+    gap: 1em;
+
+
+}
+
+
+.order-container{
+    margin: 1em 0;
+    gap: 1em;
+    position: relative;
+}
+.no-order-found{
+    position: absolute;
+    inset: 1px;
+    z-index: 2;
+    background-color: var(--primary-bg);
+}
+.order-info{
+    border-radius: .8em;
+    padding: .8em ;
+    background-color: var(--secondary-bg);
+    box-shadow: 0px 5px 10px var(--secondary-bg);
+    border: 1px solid var(--border-color);
+}
+
+.order-info-header{
+    flex-direction: column;
+    padding: .8em 0;
+    border-bottom: 1px solid var(--border-color);
+}
+.order-created-date{
+    color: var(--secondary-text);
+}
+.order-total-price{
+    font-weight: bolder;
+}
+
+.order-products{
+    padding: .8em 0;
+    flex-direction: column;
+    gap: .4em;
+}
+.order-product{
+    gap: .4em;
+}
+.order-product-image{
+    width: 40px;
+    aspect-ratio: 1/1;
+    background-color: var(--highlight-bg);
+}
+.order-product-image img{
+    height: 100%;
+    width: 100%;
+    object-fit: contain;
+}
+
+.product-category-brand-container{
+    color: var(--secondary-text);
+    align-items: center;
+}
+.product-category-brand-container .seperator{
+    line-height: 80%;
+}
+.order-progress-bar{
+    justify-content: space-around;
+    flex-direction: column;
+    align-items: center;
+    position: relative;
+    height: 350px;
+}
+
+.progress-point{
+    width: fit-content;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    position: relative;
+    align-items: center;
+    z-index: 1;
+    height: 100%;
+}
+.progress-point-circle{
+    width: 40px;
+    aspect-ratio: 1/1;
+    background-color: var(--highlight-bg);
+    border-radius: 50%;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url(/images/icons/minus.svg);
+    /* border: 1px solid var(--border-color); */
+}
+.progress-point.complete .progress-point-circle::after{
+    background-color: var(--success-color);
+    color: var(--success-color);
+}
+.progress-point.complete .progress-point-circle{
+    background-image: url("/images/icons/Check-circle.svg");
+    background-color: var(--success-color);
+
+}
+
+.primary-btn{
+    font-size: 1rem;
+    height: fit-content;
+    align-self: flex-end;
+}
+.progress-point-circle::after{
+    content: "";
+    position: absolute;
+    flex-grow: 1;
+    background-color: var(--primary-bg);
+    width: 5px;
+    height: 100%;
+    top: 0;
+    left: 50%;
+    z-index: -1;
+    transform: translate(-50%,0%);
+    color: var(--border-color);
+}
+.order-info-footer{
+    border-top: 1px solid var(--border-color);
+    padding: .8em;
+    justify-content: space-between;
+}
+.order-status{
+    padding: .8em 1em;
+    border-radius: .4em;
+    text-transform: uppercase;
+    font-weight: bolder;
+    font-size: 1.1rem;
+    color: var(--pink-txt);
+    background-color:   var(--pink-bg);
+    border: 1px solid var(--pink-txt);
+}
+.order-status.SHIPPED{
+    color: var(--yellow-txt);
+    background-color: color-mix(in srgb, var(--yellow-txt), transparent 80%);
+    border: 1px solid var(--yellow-txt);
+}
+.order-status.PROCESSING{
+    color: var(--blue-txt);
+    background-color:   var(--blue-bg);
+    border: 1px solid var(--blue-txt);
+}
+.order-status.DELIVERED{
+    color: var(--green-txt);
+    background-color:   var(--green-bg);
+    border: 1px solid var(--green-txt);
+}
+.order-status.CANCELLED{
+    color: var(--red-txt);
+    background-color:   var(--red-bg);
+    border: 1px solid var(--red-txt);
+}
+
+@media screen and (min-width:500px){
+
+    .order-info-header{
+        flex-direction: row;
+        justify-content: space-between;
+    }
+    .progress-point.complete{
+        color:  var(--success-color);
+    }
+    .order-progress-bar{
+        flex-direction:row;
+        height: fit-content;
+        margin: 1em 0;
+    }
+    .progress-point{
+        height: fit-content;
+        width: 100%;
+    }
+
+    .progress-point-circle::after{
+        height: 5px;
+        width: 100%;
+        top: 50%;
+        transform: translate(-50%, -200%);
+    }
+
+}
+@media screen and (min-width:768px){
+    .order-products{
+        flex-direction: row;
+        gap: 1rem;
+    }
+}

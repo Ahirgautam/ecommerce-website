@@ -1,0 +1,116 @@
+main{
+    padding: 1em 0;
+}
+
+.form-section{
+    background-color: var(--secondary-bg);
+    padding: 1em;
+    margin-top: .8em;
+    border-radius: .4em;
+    border: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    gap: .8em;
+}
+.input-field{
+    display: flex;
+    flex-direction: column;
+    gap: .2em;
+}
+.input-field label{
+    color: var(--secondary-text);
+}
+.input-field input{
+    background-color: var(--primary-bg);
+    padding: .8em 1em;
+    border: 1px solid var(--border-color);
+    border-radius: .4em;
+    color: var(--main-text);
+}
+.input-field input:focus{
+    box-shadow: 0 0 0 2px var(--secondary-500);
+    outline: none;
+}
+.two-input{
+    display: flex;
+    gap: .8em;
+    flex-wrap: wrap;
+}
+.two-input > *{
+    flex: 1;
+
+}
+.custom-radio{
+    background-color: var(--highlight-bg);
+    padding: .8em 1em;
+    border: 1px solid var(--border-color);
+    border-radius: .2em;
+    position: relative;
+    display: flex;
+    gap: .2em;
+}
+.custom-radio:has(:checked){
+    border-color: var(--primary-500);
+    background-color: color-mix(in srgb, var(--primary-100), var(--highlight-bg));
+}
+.custom-radio input[type="radio"]::after{
+    position: absolute;
+    content: "";
+    inset: 0;
+    cursor: pointer;
+}
+.seperator{
+    line-height: 80%;
+    vertical-align: top;
+    margin: 0 .4em;
+    color:var(--secondary-500);
+}
+.shipping-price{
+    margin-left:auto ;
+    font-weight: bold;
+}
+.light-text{
+    color: var(--secondary-text);
+}
+.order-items{
+    gap: .4em;
+}
+.order-item{
+    gap: .4em;
+    background-color: var(--highlight-bg);
+    border-bottom: 1px solid var(--border-color);
+}
+.order-item .image{
+    height: 50px;
+    width: 50px;
+
+    & img{
+        object-fit:cover;
+        height:100%;
+    }
+}
+
+.place-order-btn{
+    width: 100%;
+    font-size:1.2rem;
+}
+.order-total{
+    gap: .4em;
+    color: var(--secondary-text);
+}
+.sub-totals{
+    justify-content: space-between;
+}
+.final-total{
+    justify-content: space-between;
+    font-weight: bold;
+    color: var(--main-text);
+}
+.input-field input:user-invalid{
+    border-color: var(--red-txt);
+    background-color: color-mix(in srgb, var(--primary-bg) 80%, var(--red-txt));
+}
+.input-field input:user-valid{
+    border-color: var(--green-txt);
+    background-color: color-mix(in srgb, var(--primary-bg) 80%, var(--green-txt));
+}

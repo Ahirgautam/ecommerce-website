@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/admin_sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/admin.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{layout/fragments :: dashboard_sidebar('dashboard')}"></div>
+<section class="main-content flex-column">
+    <div class="header container">
+        <div class="flex-column">
+            <h1>Admin Dashboard</h1>
+            <p>Manage Your e-shop.</p>
+        </div>
+    </div>
+
+    <div class="info-cards flex">
+        <div class="info-card flex-column">
+            <h2>Total Orders</h2>
+            <h3 class="total-order-count">2</h3>
+            <img src="/images/icons/shopping_cart.svg" alt="">
+        </div><div class="info-card flex-column">
+            <h2>Total Products</h2>
+            <h3 class="total-product-count">2</h3>
+            <img src="/images/icons/product.svg" alt="">
+        </div><div class="info-card flex-column">
+            <h2>Total Users</h2>
+            <h3 class="total-user-count">1</h3>
+            <img src="/images/icons/users.svg" alt="">
+        </div>
+    </div>
+</section>
+</body>
+</html>

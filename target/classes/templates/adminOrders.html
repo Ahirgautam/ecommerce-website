@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <title>Orders</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/admin_sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/adminOrders.css}">
+
+</head>
+<body>
+<div th:replace="~{layout/fragments :: dashboard_sidebar('orders')}"></div>
+<section class="main-content flex-column">
+    <div class="header container">
+        <div class="flex-column">
+            <h1>Order Management</h1>
+            <p>Manage orders efficiently.</p>
+        </div>
+    </div>
+
+    <div class="filter-search-container container flex">
+        <input type="text" placeholder="Search Orders...">
+
+        <select class="custom-select" oninput="findProductByCategory(event)">
+            <option value="">Filter by Status</option>
+        </select>
+
+    </div>
+
+    <div class="table-container container">
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>order id</th>
+                    <th>customer name</th>
+                    <th>Date</th>
+                    <th>total</th>
+                    <th>order status</th>
+                    <th>payment status</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+
+
+</section>
+<div class="order-info-dialog" popover="auto" id="orderInfoDialog">
+    <div class="order-info-dialog-content flex-column">
+        <div class="flex justify-between order-info-dialog-header">
+            <h2>Order Details #ORD-<span class="order-id">12</span></h2>
+            <button class="close-btn" title="close model" autofocus id="orderInfoDialogCloseBtn" popovertarget="orderInfoDialog" popovertargetaction="hide">
+                <img src="/images/icons/close.svg" alt="">
+            </button>
+        </div>
+        <hr class="divider">
+        <div class="order-info flex-column">
+            <div class="customer-info flex-column">
+                <div class="order-info-header">Customer Information</div>
+                <div class="customer-info-grid">
+                    <span class="data-label">name:</span>
+                    <span class="customer-data customer-full-name">vala gautam</span>
+
+                    <span class="data-label">email:</span>
+                    <span class="customer-data customer-email">valagautam200@gamil.com</span>
+
+                    <span class="data-label">phone:</span>
+                    <span class="customer-data customer-number">1234567890</span>
+
+                </div>
+            </div>
+            <div>
+                <div class="order-info-header">Shipping Information</div>
+                <div class="shipping-full-address">
+                    <p class="shipping-address">bhanduri, jamvadi road, gramvistar</p>
+                    <p class="shipping-address-city">city </p>
+                    <p class="shipping-address-state">state</p>
+                    <p>india</p>
+                </div>
+            </div>
+            <div>
+                <div class="order-info-header">Order Items</div>
+                <div class="order-items flex-column">
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<custom-conformation-dialog></custom-conformation-dialog>
+
+<div class="order-update-dialog" popover="auto" id="orderUpdateDialog">
+    <div class="order-update-dialog-content flex-column">
+        <div class="flex justify-between">
+            <h2>Order info</h2>
+            <button class="close-btn" title="close form" autofocus popovertarget="orderUpdateDialog" popovertargetaction="hide">
+                <img src="/images/icons/close.svg" alt="">
+            </button>
+        </div>
+        <form action="" method="post" class="order-update-form flex-column" >
+            <div class="input-container flex-column">
+                <label for="orderId">Order id</label>
+                <input type="text" name="orderId" id="orderId" disabled title="readonly" value="1">
+            </div>
+            <div class="input-container flex-column">
+                <label for="customerName">Customer name</label>
+                <input type="text" name="customerName" id="customerName" disabled title="readonly">
+            </div>
+            <div class="input-container flex-column">
+                <label for="OrderDate">Order Date</label>
+                <input type="text" name="OrderDate" id="OrderDate" disabled title="readonly">
+            </div>
+            <div class="input-container flex-column">
+                <label for="orderStatus">Order status</label>
+                <select name="orderStatus" id="orderStatus">
+                    <option th:each="os : ${orderStatus}"
+                            th:text="${os}"
+                            th:value="${os}">select</option>
+                </select>
+            </div>
+            <div class="input-container flex-column">
+                <label for="paymentStatus">Payment status</label>
+                <select name="paymentStatus" id="paymentStatus">
+                    <option th:each="ps : ${paymentStatus}"
+                            th:text="${ps}"
+                            th:value="${ps}">select</option>
+                </select>
+            </div>
+            <div class="input-container flex-column">
+                <label for="paymentMethod">Payment method</label>
+                <input name="paymentMethod" id="paymentMethod" type="text" disabled title="readonly" />
+            </div>
+            <button class="primary-btn" id="updateOrderInfoBtn">Update</button>
+        </form>
+    </div>
+</div>
+<div th:replace="~{layout/customAlert :: alert}"></div>
+<script th:src="@{/js/customAlert.js}"></script>
+<script th:src="@{/js/customConformationDialog.js}" type="module"></script>
+<script th:src="@{/js/adminOrders.js}" type="module"></script>
+</body>
+</html>

@@ -1,0 +1,19 @@
+.info-cards{
+    gap:1em;
+}
+
+.info-card{
+    height:200px;
+    width:220px;
+    padding:.4em;
+    background:var(--secondary-bg);
+    border:1px solid var(--border-color);
+    border-radius:.4em;
+    gap:1em;
+    justify-content:Center;
+    align-items:center;
+}
+.info-card img{
+    height:30px;
+    width:30px;
+}

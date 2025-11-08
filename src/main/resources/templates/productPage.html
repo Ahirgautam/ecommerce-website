@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <title>Product</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/productPage.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+
+</head>
+<body>
+    <div th:replace="~{layout/fragments :: header('shop')}"></div>
+    <div class="breadcrumb container">
+        <ul class="flex">
+            <li th:each="crumb, stat : ${breadcrumbs}">
+                <a th:if="${!stat.last}" th:href="${crumb.url}" class="breadcrumb-link"  th:text="${crumb.label}"></a>
+                <span th:if="${stat.last}" th:text="${crumb.label}"></span>
+                <span th:if="${!stat.last}" class="link-divider">/</span>
+            </li>
+        </ul>
+    </div>
+    <main class="main-content container">
+        <section class="image-section">
+            <div class="side-image-preview flex">
+
+            </div>
+            <div class="big-preview-image">
+                <button title="next image" class="slider-btn " id="slider-back-btn">
+                    <img src="/images/icons/arrow_back.svg" alt="">
+                </button>
+                <div class="images-contaier">
+                    <ul class="images scroll-smooth" draggable="true" id="image-slider">
+                    </ul>
+                </div>
+                <button  title="prev image" class="slider-btn" id="slider-forward-btn">
+                    <img src="/images/icons/arrow_forward.svg" alt="">
+                </button>
+            </div>
+            <div class="elipses">
+            </div>
+        </section>
+        <section class="content-section flex-column">
+            <div class="info">
+                <div class="flex gap-1em">
+                    <h2 class="product-name">Product Name</h2>
+                    <span class="out-of-stock-chip hide">Out Of Stock</span>
+                </div>
+                <h3 class="product-brand">brand</h3>
+                <div class="product-price flex">
+                    <span class="current-price">100</span>
+                    <span class="old-price"></span>
+                    <span class="discount"></span>
+                </div>
+            </div>
+            <div class="features flex">
+                <div class="feature flex-column">
+                    <img src="/images/icons/warranty.svg" alt="">
+                    <span>one year warranty</span>
+                </div>
+                <div class="feature flex-column">
+                    <img src="/images/icons/local_shipping.svg" alt="">
+                    <span>free delivery</span>
+                </div>
+                <div class="feature flex-column">
+                    <img src="/images/icons/shield.svg" alt="">
+                    <span>secure transfer</span>
+                </div>
+                <div class="feature flex-column">
+                    <img src="/images/icons/undo.svg" alt="">
+                    <span>return policy</span>
+                </div>
+            </div>
+            <div class="flex-column product-btns-container">
+                <div class="product-btns flex">
+                    <button class="primary-btn add-to-cart-btn" type="button">
+                        Add To Cart
+                        <img src="/images/icons/add_shopping_cart.svg" alt="">
+                    </button>
+                    <button class="secondary-btn order-now" type="button">
+                        Order Now
+                        <img src="/images/icons/shoping_bag.svg" alt="">
+                    </button>
+                </div>
+                <div class="quantity-selector-container flex">
+                    <div class="flex inc-dec-container">
+                        <button class="increase-qty flex-center">
+                            <img src="/images/icons/add.svg">
+                        </button>
+                        <div class="qty-display-container">
+                            <input class="qty-display" value="1" type="number"/>
+                        </div>
+                        <button class="decrease-qty flex-center" disabled="true">
+                            <img src="/images/icons/minus.svg" alt="">
+                        </button>
+                    </div>
+                    <hr class="divider">
+                    <div class="sub-total-display">
+                        Sub Total :  <span class="sub-total">1 X ₹100 = 100</span>
+                    </div>
+                </div>
+            </div>
+            <div class="variants-container flex-column">
+                <h2>Variants</h2>
+                <div class="variants">
+
+                </div>
+            </div>
+        </section>
+        <div class="product-not-found flex-center hide">
+            <h2>Product Does Not Found</h2>
+
+            <a href="/shop">go to shop</a>
+        </div>
+    </main>
+    <script th:inline="javascript">
+        const product = [[${product}]];
+    </script>
+    <div th:replace="~{layout/fragments :: login-register}"></div>
+    <div th:replace="~{layout/customAlert :: alert}"></div>
+    <script th:src="@{/js/customAlert.js}"></script>
+    <script type="module" src="/js/script.js"></script>
+    <script type="module" src="/js/productPage.js"></script>
+</body>
+</html>

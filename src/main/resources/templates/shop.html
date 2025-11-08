@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <title>Shop</title>
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/shop.css}">
+    <link rel="stylesheet" th:href="@{/css/productCard.css}">
+    <link rel="stylesheet" th:href="@{/css/home.css}">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{layout/fragments :: header('shop')}"></div>
+
+<main class="container flex-column">
+    <div class="breadcrumb ">
+        <ul class="flex">
+            <li th:each="crumb, stat : ${breadcrumbs}">
+                <a th:if="${!stat.last}" th:href="${crumb.url}" class="breadcrumb-link"  th:text="${crumb.label}"></a>
+                <span th:if="${stat.last}" th:text="${crumb.label}"></span>
+                <span th:if="${!stat.last}" class="link-divider">/</span>
+            </li>
+        </ul>
+    </div>
+    <div class="flex gap-1em">
+        <aside class="filters-menu hide">
+            <form  class="flex-column filter-form">
+                <button  class="filter-menu-close-btn" title="close filter button" type="button">
+                    <img src="/images/icons/close.svg" alt="close" class="invert-img">
+                </button>
+                <div class="filter-section">
+                    <h2>Categories</h2>
+                    <ul class="category-ul flex-column">
+
+                    </ul>
+                </div>
+                <div class="filter-section">
+                    <h2>Brands</h2>
+                    <h4 th:if="${brands} == null">no brands</h4>
+                    <ul class="brand-ul flex-column">
+                        <li class="brand-li" th:each="brand : ${brands}">
+                            <input type="checkbox" name="brands" th:id="${brand}" th:value="${brand}" class="custom-checkbox">
+                            <label th:for="${brand}" th:text="${brand}"></label>
+                        </li>
+
+                    </ul>
+                </div>
+
+                <div class="">
+                    <h2>Price</h2>
+                    <div class="price-filter">
+                        <p class="price-range-output">
+                            Selected range:
+                            <span> &#8377; </span><output id="minOutput">20</output>  -
+                            <span> &#8377; </span><output id="maxOutput">80</output>
+                        </p>
+                        <div class="range-container">
+                            <input type="range" name="minPrice" title="minimum price"  class="price-range" id="minRange" min="0" max="100" value="20" >
+                            <div class="range-track"></div>
+                            <div class="range-selected-track"></div>
+                            <input type="range" name="maxPrice" title="maximum price" class="price-range" id="maxRange" min="0" max="100" value="80" >
+                        </div>
+                    </div>
+                </div>
+                <button class="primary-btn">Apply Filter</button>
+            </form>
+        </aside>
+        <section class="main-content">
+            <section class="shop-header">
+                <h2>All Products</h2>
+                <p>Check each product page for other buying options. Price and other details may vary based on product size and color.</p>
+                <div class="shop-header-menu flex justify-between">
+                    <button class="toggle-filter-sidebar-btn secondary-btn" >Filters</button>
+                    <div class="flex-column">
+                        sorted by
+                        <button class="secondary-btn mt-es">sort</button>
+                    </div>
+                </div>
+            </section>
+
+            <section class="products-container">
+
+            </section>
+            <div class="pagination">
+                <button class="prev-page tertiary-btn">Previous</button>
+                <ul class="page-numbers">
+                    <li>
+                        <!--                    <a href="#" class="page-number current-page">1</a>-->
+                    </li>
+                </ul>
+                <button class="next-page tertiary-btn">Next</button>
+            </div>
+        </section>
+    </div>
+</main>
+<div th:replace="~{layout/fragments :: footer}"></div>
+<div th:replace="~{layout/fragments :: login-register}"></div>
+<div th:replace="~{layout/customAlert :: alert}"></div>
+<script th:src="@{/js/customAlert.js}"></script>
+<script src="/js/auth.js" type="module"></script>
+<script src="/js/shop.js" type="module"></script>
+<script type="module" src="/js/script.js" ></script>
+
+</body>
+</html>

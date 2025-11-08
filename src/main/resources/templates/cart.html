@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop</title>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/cart.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{layout/fragments :: header('shop')}"></div>
+<main class="container ">
+    <div class="breadcrumb ">
+        <ul class="flex">
+            <li th:each="crumb, stat : ${breadcrumbs}">
+                <a th:if="${!stat.last}" th:href="${crumb.url}" class="breadcrumb-link"  th:text="${crumb.label}"></a>
+                <span th:if="${stat.last}" th:text="${crumb.label}"></span>
+                <span th:if="${!stat.last}" class="link-divider">/</span>
+            </li>
+        </ul>
+    </div>
+    <div class="cart-empty-message">
+        <h1>
+            Your cart is empty.
+            <a href="/shop">Shop now</a>
+        </h1>
+    </div>
+    <h1 class="page-heading">Your Shoping Cart</h1>
+    <p class="page-decription">Review your items and checkout</p>
+
+    <div class="main-content">
+        <div class="cart-products ">
+            <h2>No product found</h2>
+        </div>
+        <div class="order-summary flex-column">
+            <h2>Order summary</h2>
+            <div class="cost-container flex-column">
+                <div class="flex cost">
+                    <span>Subtotal</span><span>₹<span class="sub-total"></span> </span>
+                </div>
+                <div class="flex cost">
+                    <span>Shiping </span> <span>₹0</span>
+                </div>
+                <div class="flex cost">
+                    <span>Tax</span> <span>₹<span class="tax-amount"></span></span>
+                </div>
+                <div class="flex cost">
+                    <span>Other</span><span>₹0</span>
+                </div>
+                <hr>
+                <div class="flex cost total-cost">
+                    <span>Total</span> <span>₹<span class="total-amount"></span></span>
+                </div>
+            </div>
+            <div >
+                <button class="checkout-btn primary-btn ">Proceed to checkout</button>
+                <a class="continue-shoping-btn" href="/shop">Continue shopping</a>
+            </div>
+        </div>
+    </div>
+</main>
+<dialog  class="conformation-dialog">
+    <div class="conformation-dialog-content flex-column">
+        <div class="text-content">
+            <h2>Remove Product</h2>
+            <p class="conformation-dialog-desc">Do you want to remove product?</p>
+        </div>
+        <div class="conformation-dialog-btns">
+            <button class="cancle-btn" id="confirmationDialogCancelBtn">Cancle</button>
+            <button class="remove-btn" id="confirmationDialogRemoveBtn">Remove</button>
+        </div>
+    </div>
+</dialog>
+
+<div th:replace="~{layout/fragments :: login-register}"></div>
+<div th:replace="~{layout/customAlert :: alert}"></div>
+<script th:src="@{/js/customAlert.js}"></script>
+<script src="/js/auth.js" type="module"></script>
+<script src="/js/cart.js" type="module"></script>
+<script src="/js/script.js" type="module"></script>
+</body>
+</html>

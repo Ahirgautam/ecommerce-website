@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orders</title>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="/css/home.css">
+    <link rel="stylesheet" href="/css/order.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+</head>
+<body>
+<div th:replace="~{layout/fragments :: header('shop')}"></div>
+
+<main class="container">
+    <div class="no-order-found flex-center hide">
+        <h1>No Orders Found</h1>
+    </div>
+    <div class="order-header flex ">
+        <h1>My Orders</h1>
+
+    </div>
+    <div class="order-container flex-column">
+
+    </div>
+</main>
+
+<div th:replace="~{layout/fragments :: login-register}"></div>
+<div th:replace="~{layout/customAlert :: alert}"></div>
+<script th:src="@{/js/customAlert.js}"></script>
+<script src="/js/auth.js" type="module"></script>
+<script src="/js/order.js"></script>
+<script src="/js/script.js" type="module"></script>
+</body>
+</html>

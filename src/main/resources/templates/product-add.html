@@ -1,0 +1,226 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Panel</title>
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link href="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.snow.css" rel="stylesheet" />
+    <link th:href="@{/css/style.css}" rel="stylesheet">
+    <link th:href="@{/css/productAdd.css}" rel="stylesheet">
+</head>
+<body>
+<main class="container main flex">
+    <a th:href="@{/admin/products}" class="tertiary-btn goto-products">
+        <img th:src="@{/images/icons/arrow_right.svg}" class="rotate180 invert1" alt="">
+        Go To Products
+    </a>
+
+    <section class="form-container flex-column">
+        <hgroup class="flex-column">
+            <h2>Add Product</h2>
+            <h3 class="step-indicator-span">Step <span>: 1 Basic Information</span></h3>
+        </hgroup>
+        <div class="step-indicator flex">
+            <div class="step-indicator-circle-container flex-center flex-column ">
+                <span class="indicator-circle flex-center cur-step" data-index="1">1</span>
+                <span>Basic Info</span>
+            </div>
+            <div class="step-indicator-circle-container flex-center flex-column">
+                <span class="indicator-circle flex-center" data-index="2">2</span>
+                <span>Variants</span>
+            </div>
+            <div class="step-indicator-circle-container flex-center flex-column">
+                <span class="indicator-circle flex-center" data-index="3">3</span>
+                <span>Images</span>
+            </div>
+        </div>
+
+
+        <form action="#" class="product-form" id="productForm" method="post" enctype="multipart/form-data">
+
+            <div class="basic-info flex-column gap-1em">
+                <div class="input-field-container flex-column">
+                    <label for="productName" class="input-label">Product Name</label>
+                    <input type="text" name="productName" id="productName" placeholder="e.g. hp laptop"
+                           required minlength="3" pattern="[a-zA-Z0-9\s]+"
+                           title="Only alphanumeric characters and spaces are allowed.">
+                </div>
+                <div class="input-field-container flex-column">
+                    <label class="input-label" onclick="quill.focus()">Product Description</label>
+                    <div class="editor-container">
+                        <div id="editor"></div>
+                    </div>
+                    <p class="error-message hide" id="description-error">Please enter a product description.</p>
+                </div>
+                <div class="input-field-container flex-column">
+                    <div class="multiple-select-container flex-column">
+                        <div class="flex-column">
+                            <label for="Category" class="input-label">Select Category</label>
+                            <select name="category" id="Category" required>
+                                <option value="">select</option>
+                            </select>
+                        </div>
+                        <div class="flex-column dynamically-generated-selects"></div>
+                    </div>
+                    <a class="open-add-category-btn" onclick="showAddCategory()">Add New</a>
+                </div>
+                <div class="input-field-container flex-column">
+                    <label for="brand" class="input-label" >Select Brand</label>
+                    <select name="brand" id="brand" onchange="selectBrand()" required>
+                        <option value="">select</option>
+                        <option th:each="brand : ${brands}"
+                                th:value="${brand}"
+                                th:text="${brand}"></option>
+                        <option value="other">other</option>
+                    </select>
+                    <input type="text" name="brandName" id="brandName" class="hide" placeholder="Enter brand name"   pattern="[a-zA-Z0-9\s]+" title="Only alphanumeric characters and spaces are allowed.">
+                </div>
+            </div>
+
+
+            <div class="product-variant flex-column gap-1em hide">
+                <div class="flex justify-between">
+                    <h3>Product Variants</h3>
+                    <div class="flex gap-1em">
+                        <button class="primary-btn" onclick="addVariant()" type="button">
+                            <img th:src="@{/images/icons/plus.svg}" alt="">
+                            Add Variant
+                        </button>
+                    </div>
+                </div>
+                <div class="add-variant-table">
+                    <div class="table-heading grid grid-row">
+                        <span>Variant Name</span>
+                        <span>Attributes(name:value)</span>
+                        <span>SKU</span>
+                        <span>Base-Price</span>
+                        <span>Discounted-Price</span>
+                        <span>Stock</span>
+                        <span>Action</span>
+                    </div>
+                    <div class="grid grid-row variant-info">
+                        <input type="text" placeholder="hawaiian red shirt" name="variants[0][name]" class="variant-name" required minlength="3">
+                        <div class="flex-column Attributes-container">
+                            <div class="flex-column attributes">
+                                <div class="grid Attribute-container">
+                                    <input type="text" placeholder="e.g. color"  name="variants[0][attributes][0][name]" required>
+                                    <input type="text" placeholder="e.g. red" name="variants[0][attributes][0][value]" required>
+                                    <button type="button" aria-label="remove attribute" title="remove attribute"
+                                            class="remove-attribute-btn" onclick="removeAttributeContainer(event)">
+                                        <img th:src="@{/images/icons/Trash.svg}" alt="">
+                                    </button>
+                                </div>
+                                <div class="grid Attribute-container">
+                                    <input type="text" placeholder="e.g. size" name="variants[0][attributes][1][name]" required>
+                                    <input type="text" placeholder="e.g. m" name="variants[0][attributes][1][value]" required>
+                                    <button type="button" aria-label="remove attribute" title="remove attribute"
+                                            class="remove-attribute-btn" onclick="removeAttributeContainer(event)">
+                                        <img th:src="@{/images/icons/Trash.svg}" alt="">
+                                    </button>
+                                </div>
+                            </div>
+                            <button type="button" class="add-attribute" onclick="addAttribute(event)"> + Add Attribute</button>
+                        </div>
+                        <div class="flex-column">
+                            <input type="text" placeholder="hawa-red-shirt" class="sku" name="variants[0][sku]" required oninput="checkSku(event)"  title="Only alphanumeric characters and hyphens are allowed.">
+                            <span class="error-message hide skuMessage"  >sku already used. use another</span>
+                        </div>
+                        <input type="number" step="any" placeholder="20" name="variants[0][basePrice]" required>
+                        <input type="number" step="any" placeholder="15" name="variants[0][discountPrice]" required>
+                        <input type="number" placeholder="50" name="variants[0][stock]" required min="0">
+                        <button aria-label="remove Variant" class="edit-variant invert1" title="remove variant"
+                                type="button" onclick="removeVariant(event)">
+                            <img th:src="@{/images/icons/Trash.svg}" alt="">
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="product-images hide">
+                <aside class="tabs flex-column">
+                    <button class="tab flex justify-between active" type="button"  data-tab="tab0"
+                            data-variant-name="Default(optional)">
+                        <div class="flex gap-1em">
+                            <img th:src="@{/images/icons/Alert-triangle.svg}" class="complete" alt="">
+                            <span class="tab-name">Default</span>
+                        </div>
+                        <img th:src="@{/images/icons/Chevron-right.svg}" alt="">
+                        <div class="tool-tip">please add images</div>
+                    </button>
+                </aside>
+                <div class="tabs-content-container flex-column">
+                    <div>
+                        <h3>Images for <span class="variant-img-name">Default(optional)</span></h3>
+                        <div class="upload-box" id="uploadBox">
+                            <div class="icon">
+                                <img th:src="@{/images/icons/Upload cloud.svg}" alt="">
+                            </div>
+                            <p>Drag and drop images here or click to upload</p>
+                            <div class="buttons">
+                                <button id="uploadImages" class="primary-btn" type="button">Upload Images</button>
+                                <input type="file" id="fileInput" name="images" multiple hidden accept="image/*">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="tab-content active flex-column" id="tab0">
+                        <div class="image-preview-container flex"></div>
+                    </div>
+                </div>
+            </div>
+        </form>
+
+
+        <div class="form-container-butns flex">
+            <button class="tertiary-btn" onclick="prevFormStep()">
+                <img th:src="@{/images/icons/arrow_right.svg}" class="invert1 rotate180" alt="">
+                Previous
+            </button>
+            <div class="flex gap-1em">
+                <button class="tertiary-btn">
+                    <img th:src="@{/images/icons/save.svg}" alt="">
+                    Save as draft
+                </button>
+                <button class="primary-btn " id="nextStepBtn" onclick="nextFormStep(event)">
+                    <span class="loading"></span>
+                    <span class="text">Next</span>
+                    <img th:src="@{/images/icons/arrow_right.svg}" alt="">
+                </button>
+            </div>
+        </div>
+    </section>
+</main>
+<dialog class="category-add-modal" >
+    <div class="category-add-modal-content flex-column">
+        <div class="flex justify-between">
+            <h2>Add Category</h2>
+            <button class="category-add-modal-close-btn" title="close-modal" onclick="closeAddCategory()">
+                <img src="/images/icons/close.svg" alt="close icon">
+            </button>
+        </div>
+        <form action="" class="category-add-form flex-column">
+            <div class="input-field-container flex-column">
+                <label for="category_name">Category name<span style="color:Red">*</span></label>
+                <input type="text" name="categoryName" id="category_name" required pattern="[a-zA-Z]+">
+            </div>
+            <div class="input-field-container flex-column">
+                <label for="parent_category">Parent Category</label>
+                <select name="parentCategory" id="parent_category">
+                    <option value="">None</option>
+                </select>
+            </div>
+            <button class="primary-btn submit-category-add-btn">
+                <span class="loading"></span>
+                Add
+            </button>
+        </form>
+    </div>
+</dialog>
+<div th:replace="~{layout/customAlert :: alert}"></div>
+<script src="https://cdn.jsdelivr.net/npm/quill@2.0.3/dist/quill.js"></script>
+<script th:src="@{/js/customAlert.js}"></script>
+<script th:src="@{/js/productAdd.js}"></script>
+</body>
+</html>

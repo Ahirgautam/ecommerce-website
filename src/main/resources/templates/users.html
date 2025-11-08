@@ -1,0 +1,74 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <meta name="_csrf" th:content="${_csrf.token}" />
+    <title>Document</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100..900;1,100..900&family=Roboto:ital,wght@0,100..900;1,100..900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
+    <link rel="stylesheet" th:href="@{/css/admin_sidebar.css}">
+    <link rel="stylesheet" th:href="@{/css/users.css}">
+
+</head>
+<body>
+<div th:replace="~{layout/fragments :: dashboard_sidebar('users')}"></div>
+<section class="main-content flex-column">
+    <div class="header container">
+        <div class="flex-column">
+            <h1>User Management</h1>
+            <p>Manage user efficiently.</p>
+        </div>
+
+    </div>
+
+    <div class="filter-search-container container flex">
+        <input type="text" placeholder="Search Users..." oninput="debounceSearch(event)">
+
+        <select class="custom-select" oninput="findProductByCategory(event)">
+            <option value="">Filter by role</option>
+            <option th:each="role : ${roles}"
+                    th:text="${role.role}"
+                    th:value="${role.roleId}"></option>
+        </select>
+
+    </div>
+
+    <div class="user-table-container container">
+       <table class="user-table">
+            <thead>
+                <th>email</th>
+                <th>first name</th>
+                <th>last name</th>
+                <th>role</th>
+                <th>action</th>
+            </thead>
+            <tbody>
+
+            </tbody>
+        </table>
+    </div>
+</section>
+<dialog class="image-dialog">
+    <img src="" alt="">
+    <button id="close-model" aria-label="close-modal" autofocus>
+        <img src="/images/icons/close.svg"  alt="close modal">
+    </button>
+</dialog>
+<dialog class="delete-conformation-modal" id="modal1">
+    <div class="modal-content">
+        <h2 class="modal-title">delete variant !</h2>
+        <p class="modal-message">this will delete shirt variant </p>
+        <div class="flex button-container">
+            <button class="cancle-btn" onclick="closeModal()">Cancel</button>
+            <button id="accept-btn" class="ok-btn">Ok</button>
+        </div>
+    </div>
+</dialog>
+<div th:replace="~{layout/customAlert :: alert}"></div>
+<script th:src="@{/js/customAlert.js}"></script>
+<script th:src="@{/js/users.js}"></script>
+</body>
+</html>

@@ -1,0 +1,368 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.w3.org/1999/xhtml" xmlns:sec="http://www.w3.org/1999/xhtml">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+<!--    <link rel="stylesheet" href="/static/css/style.css">-->
+<!--    <link rel="stylesheet" href="/static/css/home.css">-->
+<!--    <link rel="stylesheet" href="/static/css/admin_sidebar.css">-->
+
+</head>
+<body>
+<header class="header" th:fragment="header(activePage)" >
+    <div class="header-content container flex">
+        <button id="hamburger-btn" class="hamburger-btn" type="button"
+                aria-expanded="false" aria-controls="mobileNav" aria-label="Toggle navigation">
+            <img th:src="@{/images/icons/hamburger-menu_svgrepo.com.svg}" alt="hamburger menu"
+                 class="hamburger-img invert-img"/>
+        </button>
+
+        <div class="logo-container flex-center">
+            <a class="logo" href="/">
+                <img src="/images/logo.svg" alt="ShopEase"/>
+            </a>
+        </div>
+
+        <nav class="navbar">
+            <ul class="flex">
+                <li><a href="/" th:classappend="${activePage == 'home'} ? 'active' : ''" >Home</a></li>
+                <li><a href="/shop" th:classappend="${activePage == 'shop'} ? 'active' : ''">Shop</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#" >Contact</a></li>
+                <li sec:authorize="isAuthenticated()" th:if="${user.role == 'admin'}"><a href="/admin/dashboard">dashboard</a></li>
+            </ul>
+        </nav>
+
+        <div class="nav-right-box flex">
+            <div class="search-suggestion-container">
+                <input type="text" placeholder="Search" class="nav-search search-field" data-index="0"   />
+                <div class="search-suggestion hide">
+                    <p class="not-found">NOT PRODUCT FOUND</p>
+                </div>
+            </div>
+            <a href="/shop/cart" class="cart-btn flex-center" data-quantity="0" title="product cart">
+                <img th:src="@{/images/icons/shopping_cart.svg}" class="invert-img" alt="cart items"   />
+            </a>
+
+            <div sec:authorize="isAuthenticated()">
+                <details class="user-account-opener">
+                    <summary>
+                        <div class="profile-img">
+                            <img th:src="${user.profilePic != null ? user.profilePic : '/images/icons/account_circle.svg'}"
+                                 class="user-profile-img"
+                                 onerror="this.src='/images/icons/account_circle.svg'"
+                                 alt="Profile Picture"/>
+
+                        </div>
+                        <img th:src="@{/images/icons/arrow_down.svg}" class="arrow-down invert-img" alt="arrow down">
+                    </summary>
+
+                    <div class="user-account-menu flex">
+                        <a href="#" class="user-account-menu-item view-profile">
+                            <img th:src="@{/images/icons/account_circle.svg}" class="invert-img" alt="">
+                            <p class="text-ellipse" th:text="${user.fullName != null  ? user.fullName : user.email}"></p>
+                        </a>
+                        <hr>
+                        <a href="#" class="user-account-menu-item">
+                            <img th:src="@{/images/icons/setting_svgrepo.com.svg}" alt="" class="invert-img">
+                            setting
+                        </a>
+                        <a href="/shop/orders" class="user-account-menu-item">
+                            <img th:src="@{/images/icons/order_svgrepo.com.svg}" alt="" class="invert-img">
+                            orders
+                        </a>
+                        <a href="/shop/favorites" class="user-account-menu-item">
+                            <img th:src="@{/images/icons/heart_svgrepo.com.svg}" alt="" class="invert-img">
+                            Favorites
+                        </a>
+
+                        <a class="user-account-menu-item apperance">
+                            <img src="/images/icons/themes_svgrepo.com.svg" alt="" class="invert-img">
+                            Apperance
+                            <img src="/images/icons/arrow_forward.svg" alt="" class="invert-img">
+                            <div class="apperance-option-container flex-column">
+                                <div class="apperance-option" data-type="light">light</div>
+                                <div class="apperance-option active" data-type="dark">dark</div>
+                                <div class="apperance-option" data-type="system">system default</div>
+                            </div>
+                        </a>
+                        <a href="/logout" class="user-account-menu-item" >
+                            <img th:src="@{/images/icons/logout_svgrepo.com.svg}" alt="" class="invert-img">
+                            log out
+                        </a>
+
+                    </div>
+                </details>
+            </div>
+
+            <!-- If user is NOT authenticated -->
+            <div sec:authorize="!isAuthenticated()">
+                <button class="primary-btn header-login-btn" >Login</button>
+            </div>
+        </div>
+
+        <!-- Mobile nav -->
+        <nav id="mobileNav" class="navbar navbar-mobile hide" aria-label="Toggle navigation mobile">
+            <ul class="flex">
+                <li><a href="/" th:classappend="${activePage == 'home'} ? 'active' : ''">Home</a></li>
+                <li><a href="/shop" th:classappend="${activePage == 'shop'} ? 'active' : ''">Shop</a></li>
+                <li><a href="#">About</a></li>
+                <li><a href="#">Contact</a></li>
+                <li sec:authorize="isAuthenticated()" th:if="${user.role == 'admin'}"><a href="/admin/dashboard">dashboard</a></li>
+            </ul>
+        </nav>
+    </div>
+
+
+    <div class="container search-box">
+        <div class="search-suggestion-container">
+            <input placeholder="Search " class="search-field" data-index="1"   >
+            <div class="search-suggestion hide">
+                <p class="not-found">NOT PRODUCT FOUND</p>
+            </div>
+        </div>
+    </div>
+
+    <script src="/../js/header.js"  type="module"></script>
+</header>
+<section th:fragment="login-register" class="login-register-container flex hide">
+
+    <section class="form-container login " id="loginForm">
+        <div class="flex login-header">
+            <h2>Log In</h2>
+            <button class="close-btn login-close-btn" >
+                <img th:src="@{/images/icons/close.svg}" class="invert-img" alt="close login form">
+            </button>
+        </div>
+        <form class="flex form mt-m" th:action="@{/login}" method="post" novalidate autocomplete="on">
+            <div class="email-container">
+                <label for="inputEmail" class="form-label">Email</label>
+                <br>
+                <input type="email" id="inputEmail" name="email" class="form-input email-field" required autocomplete="on" />
+                <br>
+                <span class="error-message error-message-email hide">Please Enter Email</span>
+            </div>
+            <div class="password-container">
+                <label for="inputPassword" class="form-label">Password</label>
+                <br>
+                <input type="password" id="inputPassword" name="password" class="form-input" required autocomplete="on"/>
+                <br>
+                <span class="error-message error-message-password hide"></span>
+            </div>
+            <button class="primary-btn login-btn w-full">
+                <span class="loading"></span>
+                Login
+            </button>
+        </form>
+        <div class="flex form-divider">
+            <hr>
+            <span>OR</span>
+            <hr>
+        </div>
+        <a th:href="@{/oauth2/authorization/google}" class="tertiary-btn">
+            <img th:src="@{/images/icons/google-logo.svg}" alt="Google logo">
+            Login With Google
+        </a>
+        <p class="go-to-other-form mt-m">
+            New User?
+            <button class="link-btn show-register-btn" >Create Account</button>
+        </p>
+    </section>
+
+    <section class="form-container register hide" id="registerForm">
+        <div class="flex login-header">
+            <h2>Create Account</h2>
+            <button class="close-btn register-close-btn" >
+                <img th:src="@{/images/icons/close.svg}" class="invert-img" alt="close register form">
+            </button>
+        </div>
+        <form class="flex form mt-m register-form" autocomplete="on">
+            <div class="email-container">
+                <label for="inputEmail2" class="form-label">Email</label>
+                <br>
+                <input type="email" id="inputEmail2" name="email" class="form-input" autocomplete="on" />
+                <br>
+                <span class="error-message error-message-email hide"></span>
+            </div>
+            <div class="password-container">
+                <label for="inputPassword2" class="form-label">Password</label>
+                <br>
+                <input type="password" id="inputPassword2" name="password" class="form-input" autocomplete="on"/>
+                <br>
+                <span class="error-message error-message-password hide"></span>
+            </div>
+            <button class="primary-btn w-full create-account" name="submit">
+                <span class="loading"></span>
+                Create Account
+            </button>
+        </form>
+        <div class="flex form-divider">
+            <hr>
+            <span>OR</span>
+            <hr>
+        </div>
+        <a th:href="@{/oauth2/authorization/google}" class="tertiary-btn">
+            <img th:src="@{/images/icons/google-logo.svg}" alt="Google logo">
+            Register With Google
+        </a>
+        <p class="go-to-other-form mt-m">
+            Already Have Account?
+            <button class="link-btn goto-login-btn" >Login</button>
+        </p>
+    </section>
+
+    <section class="otp-verification flex hide">
+        <div class="otp-verification-heading flex">
+            <h2 >OTP Verification</h2>
+            <button class="close-btn close-otp-btn" >
+                <img th:src="@{/images/icons/close.svg}" class="invert-img" alt="close login form">
+            </button>
+        </div>
+        <video th:src="@{/images/Email.webm}" autoplay muted loop ></video>
+        <p class="otp-verification-msg">We have sent a verification otp on email <span class="user-email"></span> </p>
+        <form class="flex otp-verification-input">
+            <input type="text" maxlength="6" name="otp" class="otp-field" pattern="[0-9]{6}" required placeholder="enter otp here....">
+            <button class="primary-btn">Verify</button>
+        </form>
+        <p class="resend-email mt-m " >Don’t have access to email? <a href="#" class="show-register-btn" >Change Email</a> </p>
+    </section>
+</section>
+<aside class="aside_nav flex" th:fragment="dashboard_sidebar(activePage)" >
+    <div class="navigation flex">
+        <a th:href="@{/}" class="logo">
+            <img src="/images/logo.svg" alt="ShopEase"/>
+        </a>
+        <hr>
+        <nav>
+            <ul class="flex">
+                <li>
+                    <a th:href="@{/admin/dashboard}" class="nav-link"
+                       th:classappend="${activePage == 'dashboard'} ? 'active-link' : ''">
+                        <img th:src="@{/images/icons/home.svg}" alt="" class="invert-img">
+                        Dashboard
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/products}" class="nav-link"
+                       th:classappend="${activePage == 'products'} ? 'active-link' : ''">
+                        <img th:src="@{/images/icons/product.svg}" alt="" class="invert-img">
+                        Product
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/orders}" class="nav-link"
+                       th:classappend="${activePage == 'orders'} ? 'active-link' : ''">
+                        <img th:src="@{/images/icons/shopping_cart.svg}" alt="" class="invert-img">
+                        Orders
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/users}"
+                       th:classappend="${activePage == 'users'} ? 'active-link' : ''"
+                       class="nav-link">
+                        <img th:src="@{/images/icons/users.svg}" alt="" class="invert-img">
+                        Users
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/analytics}" class="nav-link">
+                        <img th:src="@{/images/icons/analytics-graph-chart_svgrepo.com.svg}" alt="" class="invert-img">
+                        Analytics
+                    </a>
+                </li>
+                <li>
+                    <a th:href="@{/admin/settings}" class="nav-link">
+                        <img th:src="@{/images/icons/setting_svgrepo.com.svg}" alt="" class="invert-img">
+                        Setting
+                    </a>
+                </li>
+            </ul>
+        </nav>
+    </div>
+    <div class="profile flex-column">
+        <div class="flex profile-info">
+            <img  th:src="@{/images/icons/account_circle.svg}" alt="">
+            <div class="flex-column">
+                <span class="username" th:text="${user.fullName != null ? user.fullName : user.email}">
+                    vala gautam
+                </span>
+                <span class="role" th:text="${user.role}">
+                    admin
+                </span>
+
+            </div>
+        </div>
+    </div>
+    <script src="/js/theme.js" type="module"></script>
+</aside>
+<footer th:fragment="footer" class="footer">
+    <div class="container footer-content">
+        <div class="site-info flex-column">
+            <h2>ShopEase</h2>
+            <p>
+                Your one-stop destination for all your shopping needs. Quality products at competitive prices.
+            </p>
+        </div>
+        <div class="flex-column">
+            <h2>Quick Links</h2>
+            <ul class="footer-links">
+                <li>
+                    <a href="#">Home</a>
+                </li>
+                <li>
+                    <a href="#">Shop</a>
+                </li>
+                <li>
+                    <a href="#">About us</a>
+                </li>
+                <li>
+                    <a href="#">Contact</a>
+                </li>
+            </ul>
+        </div>
+        <div class="flex-column">
+            <h2>Customer Service</h2>
+            <ul class="footer-links">
+                <li>
+                    <a href="#">My Account</a>
+                </li>
+                <li>
+                    <a href="#">Order Tracking</a>
+                </li>
+                <li>
+                    <a href="#">Wishilist</a>
+                </li>
+                <li>
+                    <a href="#">FAQ</a>
+                </li>
+            </ul>
+        </div>
+        <div class="flex-column">
+            <h2>Contact Us</h2>
+            <ul class="footer-links contact-us-links">
+                <li>
+
+                    <svg xmlns="http://www.w3.org/2000/svg" class="footer-svg" width="24" height="24" viewBox="0 0 24 24" >
+                        <path d="M12 2C8.13 2 5 5.13 5 9C5 14.25 12 22 12 22C12 22 19 14.25 19 9C19 5.13 15.87 2 12 2ZM7 9C7 6.24 9.24 4 12 4C14.76 4 17 6.24 17 9C17 11.88 14.12 16.19 12 18.88C9.92 16.21 7 11.85 7 9Z" />
+                        <path d="M12 11.5C13.3807 11.5 14.5 10.3807 14.5 9C14.5 7.61929 13.3807 6.5 12 6.5C10.6193 6.5 9.5 7.61929 9.5 9C9.5 10.3807 10.6193 11.5 12 11.5Z" />
+                    </svg>
+                    123 My St, Gujarat, 362245, India
+                </li>
+                <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="footer-svg" width="24" height="24" viewBox="0 0 24 24" >
+                        <path d="M6.54 5C6.6 5.89 6.75 6.76 6.99 7.59L5.79 8.79C5.38 7.59 5.12 6.32 5.03 5H6.54ZM16.4 17.02C17.25 17.26 18.12 17.41 19 17.47V18.96C17.68 18.87 16.41 18.61 15.2 18.21L16.4 17.02ZM7.5 3H4C3.45 3 3 3.45 3 4C3 13.39 10.61 21 20 21C20.55 21 21 20.55 21 20V16.51C21 15.96 20.55 15.51 20 15.51C18.76 15.51 17.55 15.31 16.43 14.94C16.33 14.9 16.22 14.89 16.12 14.89C15.86 14.89 15.61 14.99 15.41 15.18L13.21 17.38C10.38 15.93 8.06 13.62 6.62 10.79L8.82 8.59C9.1 8.31 9.18 7.92 9.07 7.57C8.7 6.45 8.5 5.25 8.5 4C8.5 3.45 8.05 3 7.5 3Z" />
+                    </svg>
+                    +1 (555) 123-4567
+                </li>
+                <li>
+                    <svg xmlns="http://www.w3.org/2000/svg" class="footer-svg" width="24" height="24" viewBox="0 0 24 24" >
+                        <path d="M21 8L17.4392 9.97822C15.454 11.0811 14.4614 11.6326 13.4102 11.8488C12.4798 12.0401 11.5202 12.0401 10.5898 11.8488C9.53864 11.6326 8.54603 11.0811 6.5608 9.97822L3 8M6.2 19H17.8C18.9201 19 19.4802 19 19.908 18.782C20.2843 18.5903 20.5903 18.2843 20.782 17.908C21 17.4802 21 16.9201 21 15.8V8.2C21 7.0799 21 6.51984 20.782 6.09202C20.5903 5.71569 20.2843 5.40973 19.908 5.21799C19.4802 5 18.9201 5 17.8 5H6.2C5.0799 5 4.51984 5 4.09202 5.21799C3.71569 5.40973 3.40973 5.71569 3.21799 6.09202C3 6.51984 3 7.07989 3 8.2V15.8C3 16.9201 3 17.4802 3.21799 17.908C3.40973 18.2843 3.71569 18.5903 4.09202 18.782C4.51984 19 5.07989 19 6.2 19Z"  stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                    </svg>
+                    valagautam220@gmail.com
+                </li>
+            </ul>
+        </div>
+    </div>
+</footer>
+</body>
+</html>
