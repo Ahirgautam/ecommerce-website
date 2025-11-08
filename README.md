@@ -19,4 +19,4 @@
 - Admin dashboard
 - Product order and tracking
 
-### For more info read my documentation 
+### [For more info read my documentation](https://github.com/Ahirgautam/ecommerce-website/blob/main/documentation/gautam.pdf) 
